@@ -69,7 +69,7 @@ requests==2.25.0          # via django-healthchecks
 sentry-sdk==0.19.5        # via -r requirements.in
 six==1.15.0               # via django-healthchecks, faker, flake8-print, pip-tools, python-dateutil
 sqlparse==0.4.1           # via django
-testfixtures==6.16.0      # via flake8-isort
+testfixtures==6.17.0      # via flake8-isort
 text-unidecode==1.2       # via faker
 toml==0.10.2              # via black, pytest
 traitlets==5.0.5          # via ipython
