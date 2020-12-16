@@ -1,0 +1,125 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@1.0.1
+
+defaults: &defaults
+  resource_class: 'small'
+
+jobs:
+  lint_and_test:
+
+    <<: *defaults
+
+    docker:
+      - image: circleci/python:3.8.6-buster
+        environment:
+          - ENV_FILE=.env.ci
+
+    steps:
+
+      - checkout
+
+      - restore_cache:
+          key: deps-{{ checksum "src/requirements.txt" }}
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r src/requirements.txt
+
+      - save_cache:
+          key: deps-{{ checksum "src/requirements.txt" }}
+          paths:
+            - "venv"
+
+      - run:
+          name: Install locale stuff
+          command: sudo apt-get update && sudo apt-get --no-install-recommends install -y locales-all gettext
+
+      - run:
+          name: Create empty dot env file
+          command: touch src/app/.env
+
+      - run:
+          name: Linter
+          command: |
+            . venv/bin/activate
+            cd src && flake8
+
+      - run:
+          name: Test
+          command: |
+            . venv/bin/activate
+            cd src && python -m pytest
+
+      - run:
+          name: Compile django messages
+          command: |
+            . venv/bin/activate
+             cd src && ./manage.py compilemessages
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - "venv"
+            - "src"
+            - ".circleci"
+
+  build_and_push_image:
+    executor: docker/docker
+    steps:
+      - attach_workspace:
+          at: .
+      - setup_remote_docker
+      - docker/check
+      - docker/build:
+          image: kazqvaizer/concrete-maker
+          tag: latest,${CIRCLE_SHA1}
+          cache_from: kazqvaizer/concrete-maker:latest
+          path: src
+      - docker/push:
+          image: kazqvaizer/concrete-maker
+          tag: latest,${CIRCLE_SHA1}
+
+  deploy:
+
+    <<: *defaults
+
+    docker:
+      - image: circleci/buildpack-deps:stretch
+
+    steps:
+
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Prepare ssh
+          command: |
+            mkdir -p ~/.ssh
+            cp .circleci/ssh_config ~/.ssh/config
+            cp .circleci/known_hosts ~/.ssh/
+
+      - run:
+          name: Deploy and wait
+          command: ssh prod "/srv/deploy-and-wait.sh concrete-maker"
+
+workflows:
+  main:
+    jobs:
+      - lint_and_test
+      - build_and_push_image:
+          requires:
+            - lint_and_test
+          filters:
+            branches:
+              only: master
+      - deploy:
+          requires:
+            - build_and_push_image
+          filters:
+            branches:
+              only: master
