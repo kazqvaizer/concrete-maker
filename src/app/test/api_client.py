@@ -53,6 +53,11 @@ class DRFClient(APIClient):
             "put", kwargs.get("expected_status_code", 200), *args, **kwargs
         )
 
+    def patch(self, *args, **kwargs):
+        return self._api_call(
+            "patch", kwargs.get("expected_status_code", 200), *args, **kwargs
+        )
+
     def delete(self, *args, **kwargs):
         return self._api_call(
             "delete", kwargs.get("expected_status_code", 204), *args, **kwargs
