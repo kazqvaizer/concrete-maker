@@ -66,7 +66,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     # Current project
-    "app",
+    "app.apps.ConcreteMakerAppConfig",
+    "lab.apps.LabConfig",
+    "production.apps.ProductionConfig",
 ]
 
 MIDDLEWARE = [

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-17 11:00+1000\n"
+"POT-Creation-Date: 2021-01-08 13:55+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,55 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
-#: app/models.py:13
-msgid "Some value"
-msgstr ""
+
+#: lab/apps.py:7
+msgid "Lab"
+msgstr "Лаборатория"
+
+#: lab/models.py:7
+msgid "Name"
+msgstr "Название"
+
+#: lab/models.py:10 production/models.py:15
+msgid "Cement, kg"
+msgstr "Цемент, кг"
+
+#: lab/models.py:13 production/models.py:18
+msgid "Sand, kg"
+msgstr "Песок, кг"
+
+#: lab/models.py:16 production/models.py:21
+msgid "Gravel, kg"
+msgstr "Щебень, кг"
+
+#: lab/models.py:19 production/models.py:24
+msgid "Water, kg"
+msgstr "Вода, кг"
+
+#: lab/models.py:22 production/models.py:27
+msgid "Admixture, kg"
+msgstr "Добавка, кг"
+
+#: lab/models.py:26 production/models.py:8
+msgid "Recipe"
+msgstr "Рецепт"
+
+#: lab/models.py:27
+msgid "Recipes"
+msgstr "Рецепты"
+
+#: production/apps.py:7
+msgid "Production"
+msgstr "Производство"
+
+#: production/models.py:11
+msgid "Volume, m3"
+msgstr "Объём, м3"
+
+#: production/models.py:31
+msgid "Batch"
+msgstr "Замес"
+
+#: production/models.py:32
+msgid "Batches"
+msgstr "Замесы"
